@@ -8,16 +8,12 @@ if ($ruta !== '/' && file_exists(__DIR__ . $ruta)) {
 }
 
 $ruta = rtrim($ruta, '/');
+$routes = require __DIR__ . "/routes.php";
 
-if ($ruta === '/home' || $ruta === '') {
-    #Se agrega una variable que apunte al contenido deseado, en este caso: home,
-    #Ya que dentro del require php no puede acceder a directorios arriba de su
-    #ruta actual, por lo que se le pasa desde esta variable $parent_content, que
-    #más adelante llamaremos root, para poder acceder a la estructura completa
-    #del proyecto y tener más maniobrabilidad de una manera sensilla.
-    $parent_content = $content_route . "/home.php";
-    require __DIR__ . "/includes/layout.php";
+if (array_key_exists($ruta, $routes)) {
+    $parent_content = $content_route . '/' . $routes[$ruta] . '.php';
 } else {
-    $parent_content =  $content_route . "/404.php";
-    require __DIR__ . "/includes/layout.php";
+    $parent_content = $content_route . '/404.php';
 }
+
+require __DIR__ . "/includes/layout.php";
